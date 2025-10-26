@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coach-Neo.fr - Réservation et Paiement</title>
+<style>
+    body {font-family: 'Segoe UI', sans-serif; background: #f5f6fa; margin: 0;}
+    header {background: #4a148c; color: white; padding: 1rem; text-align: center; font-size: 1.5rem; font-weight: bold;}
+    .container {max-width: 1000px; margin: 2rem auto; background: white; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);}
+    .progress-bar {display: flex; height: 8px; background: #ddd;}
+    .progress {background: #4a148c; width: 0%; transition: width 0.3s ease;}
+    .step {display: none; padding: 2rem;}
+    .step.active {display: block; animation: fadeIn 0.3s ease;}
+    @keyframes fadeIn {from {opacity: 0;} to {opacity: 1;}}
+    .buttons {display: flex; justify-content: space-between; margin-top: 2rem;}
+    button {padding: 0.7rem 1.5rem; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem;}
+    .btn-prev {background: #ccc;}
+    .btn-next {background: #4a148c; color: white;}
+    .summary {background: #fafafa; padding: 1rem; border-top: 1px solid #eee; font-size: 0.9rem;}
+    .summary h4 {margin-top: 0;}
+    .option-card {background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; cursor: pointer; transition: all 0.2s ease;}
+    .option-card:hover {background: #eee;}
+    input, select {padding: 0.5rem; width: 100%; margin: 0.5rem 0; border: 1px solid #ccc; border-radius: 5px;}
+</style>
+</head>
+<body>
+
+<header>Réservation - Coach-Neo.fr</header>
+
+<div class="container">
+    <div class="progress-bar"><div class="progress"></div></div>
+
+    <!-- Étapes 1 à 10 identiques -->
+    <div class="step active" data-step="1">
+        <h2>1. Choisissez une catégorie</h2>
+        <div class="option-card" onclick="selectOption('Catégorie', 'Yoga')">🧘 Yoga</div>
+        <div class="option-card" onclick="selectOption('Catégorie', 'Musculation')">🏋️ Musculation</div>
+        <div class="option-card" onclick="selectOption('Catégorie', 'Pack Bien-être')">💆 Pack Bien-être</div>
+        <div class="buttons"><button class="btn-next" onclick="nextStep()">Suivant</button></div>
+    </div>
+
+    <div class="step" data-step="2">
+        <h2>2. Choisissez un service</h2>
+        <div class="option-card" onclick="selectOption('Service', 'Coaching à domicile')">🏠 Coaching à domicile</div>
+        <div class="option-card" onclick="selectOption('Service', 'Coaching en salle')">🏢 Coaching en salle</div>
+        <div class="buttons"><button class="btn-prev" onclick="prevStep()">Précédent</button><button class="btn-next" onclick="nextStep()">Suivant</button></div>
+    </div>
+
+    <div class="step" data-step="3">
+        <h2>3. Choisissez votre coach</h2>
+        <div class="option-card" onclick="selectOption('Coach', 'Enzo')">👨‍💼 Enzo</div>
+        <div class="option-card" onclick="selectOption('Coach', 'Sophie')">👩‍💼 Sophie</div>
+        <div class="buttons"><button class="btn-prev" onclick="prevStep()">Précédent</button><button class="btn-next" onclick="nextStep()">Suivant</button></div>
+    </div>
+
+    <div class="step" data-step="4">
+        <h2>4. Choisissez une date</h2>
+        <input type="date" onchange="selectOption('Date', this.value)">
+        <div class="buttons"><button class="btn-prev" onclick="prevStep()">Précédent</button><button class="btn-next" onclick="nextStep()">Suivant</button></div>
+    </div>
+
+    <div class="step" data-step="5">
+        <h2>5. Choisissez une heure</h2>
+        <input type="time" onchange="selectOption('Heure', this.value)">
+        <div class="buttons"><button class="btn-prev" onclick="prevStep()">Précédent</button><button class="btn-next" onclick="nextStep()">Suivant</button></div>
+    </div>
+
+    <div class="step" data-step="6">
+        <h2>6. Extras</h2>
+        <div class="option-card" onclick="selectOption('Extras', 'Massage 30min')">💆 Massage 30min</div>
+        <div class="option-card" onclick="selectOption('Extras', 'Programme nutritionnel')">🥗 Programme nutritionnel</div>
+        <div class="buttons"><button class="btn-prev" onclick="prevStep()">Précédent</button><button class="btn-next" onclick="nextStep()">Suivant</button></div>
+    </div>
+
+    <div class="step" data-step="7">
+        <h2>7. Code promo</h2>
+        <input type="text" placeholder="Entrez votre code promo" onchange="selectOption('Code promo', this.value)">
+        <div class="buttons"><button class="btn-prev" onclick="prevStep()">Précédent</button><button class="btn-next" onclick="nextStep()">Suivant</button></div>
+    </div>
+
+    <div class="step" data-step="8">
+        <h2>8. Informations personnelles</h2>
+        <input type="text" placeholder="Nom" onchange="selectOption('Nom', this.value)">
+        <input type="email" placeholder="Email" onchange="selectOption('Email', this.value)">
+        <input type="tel" placeholder="Téléphone" onchange="selectOption('Téléphone', this.value)">
+        <div class="buttons"><button class="btn-prev" onclick="prevStep()">Précédent</button><button class="btn-next" onclick="nextStep()">Suivant</button></div>
+    </div>
+
+    <div class="step" data-step="9">
+        <h2>9. Adresse</h2>
+        <input type="text" placeholder="Adresse complète" onchange="selectOption('Adresse', this.value)">
+        <div class="buttons"><button class="btn-prev" onclick="prevStep()">Précédent</button><button class="btn-next" onclick="nextStep()">Suivant</button></div>
+    </div>
+
+    <div class="step" data-step="10">
+        <h2>10. Confirmation</h2>
+        <p>Vérifiez vos informations avant paiement.</p>
+        <div id="confirmation"></div>
+        <div class="buttons"><button class="btn-prev" onclick="prevStep()">Précédent</button><button class="btn-next" onclick="nextStep()">Procéder au paiement</button></div>
+    </div>
+
+    <!-- Étape 11 : Paiement Stripe -->
+    <div class="step" data-step="11">
+        <h2>11. Paiement sécurisé</h2>
+        <p>Vous allez être redirigé vers Stripe Checkout (mode test).</p>
+        <button id="checkout-button" class="btn-next">Payer maintenant</button>
+    </div>
+
+    <!-- Résumé -->
+    <div class="summary">
+        <h4>Résumé de votre réservation</h4>
+        <div id="summary-content">Aucune sélection pour le moment.</div>
+    </div>
+</div>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    let currentStep = 1;
+    const totalSteps = 11;
+    let selections = {};
+
+    function updateProgress() {
+        document.querySelector('.progress').style.width = ((currentStep-1)/(totalSteps-1))*100 + '%';
+    }
+
+    function showStep(step) {
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        document.querySelector(`.step[data-step="${step}"]`).classList.add('active');
+        updateProgress();
+        updateSummary();
+        if(step === 10){
+            document.getElementById('confirmation').innerHTML = document.getElementById('summary-content').innerHTML;
+        }
+    }
+
+    function nextStep() {
+        if (currentStep < totalSteps) {
+            currentStep++;
+            showStep(currentStep);
+        }
+    }
+
+    function prevStep() {
+        if (currentStep > 1) {
+            currentStep--;
+            showStep(currentStep);
+        }
+    }
+
+    function selectOption(type, value) {
+        selections[type] = value;
+        updateSummary();
+    }
+
+    function updateSummary() {
+        let html = '';
+        for (let key in selections) {
+            html += `<strong>${key} :</strong> ${selections[key]}<br>`;
+        }
+        document.getElementById('summary-content').innerHTML = html || 'Aucune sélection pour le moment.';
+    }
+
+    updateProgress();
+
+    // Stripe Checkout
+    const stripe = Stripe("pk_test_1234567890ABCDEFGHIJK"); // Remplacer par votre clé publique test
+    document.getElementById("checkout-button").addEventListener("click", function () {
+        fetch("/create-checkout-session", { // Endpoint backend à créer
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ selections })
+        })
+        .then(res => res.json())
+        .then(session => stripe.redirectToCheckout({ sessionId: session.id }))
+        .catch(err => console.error(err));
+    });
+</script>
+
+</body>
+</html>
